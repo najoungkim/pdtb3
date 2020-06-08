@@ -18,4 +18,4 @@ Our preprocessing code for PDTB 2.0 requires it to be in `.csv` format. Please r
 
 * For preprocessing PDTB 2.0, please first run:
 
-        bash pdtb2_setup.sh
+      bash pdtb2_setup.sh
