@@ -26,11 +26,11 @@ Our preprocessing code can generate section-wise cross-validation folds as descr
 
 For PDTB 3.0, running the following will save cross-validation folds to `data/pdtb3_xval`:
 
-      python preprocess/preprocess-pdtb3.py --data_path path/to/data --output_dir data/pdtb3_xval --split xval
+      python preprocess/preprocess_pdtb3.py --data_path path/to/data --output_dir data/pdtb3_xval --split xval
 
 For PDTB 2.0, running the following will save cross-validation folds to `data/pdtb2_xval`:
 
-      python preprocess/preprocess-pdtb2.py --data_file path/to/data/pdtb2.csv --output_dir data/pdtb2_xval --split xval
+      python preprocess/preprocess_pdtb2.py --data_file path/to/data/pdtb2.csv --output_dir data/pdtb2_xval --split xval
 
 ## BERT/XLNet Baselines
 
