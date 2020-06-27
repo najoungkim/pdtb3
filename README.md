@@ -1,6 +1,6 @@
 # PDTB 2.0/3.0 Preprocessing and BERT/XLNet Baselines
 
-This repository contains the preprocessing code and code to replicate the experiments used in the paper Implicit Discourse Relation Classification: We Need to Talk about Evaluation [paper](https://www.aclweb.org/anthology/2020.acl-main.480/), accepted to ACL 2020.
+This repository contains the preprocessing code and code to replicate the experiments used in the paper [Implicit Discourse Relation Classification: We Need to Talk about Evaluation](https://www.aclweb.org/anthology/2020.acl-main.480/), accepted to ACL 2020.
 
 ## Data
 
