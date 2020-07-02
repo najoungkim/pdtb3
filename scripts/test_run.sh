@@ -22,4 +22,5 @@ python ../src/pytorch-transformers/examples/run_pdtb.py \
     --seed 1 \
     --validation_metric acc \
     --n_gpu 1 \
-    --cuda_no ${CUDA_NO}
+    --cuda_no ${CUDA_NO} \
+    --deterministic
