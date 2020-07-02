@@ -12,11 +12,11 @@ Access to both PDTB 2.0 and 3.0 requires an LDC license, so we cannot distribute
 
 ## Requirements
 
-* Python 3.7.3 or higher
+* Python 3.7.3 or higher (Python 3.6 will throw a `UnicodeDecodeError`)
 
 * For preprocessing PDTB 3.0, no packages are required other than numpy.
 
-* For preprocessing PDTB 2.0, please first run:
+* For preprocessing PDTB 2.0, you additionally need NLTK. Also please first run:
 
       bash pdtb2_setup.sh
 
