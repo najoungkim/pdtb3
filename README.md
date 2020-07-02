@@ -4,7 +4,7 @@ This repository contains the preprocessing code and code to replicate the experi
 
 ## Data
 
-Access to both PDTB 2.0 and 3.0 require an LDC license, so we cannot distribute this data. 
+Access to both PDTB 2.0 and 3.0 requires an LDC license, so we cannot distribute this data. 
 
 * PDTB 3.0 can be downloaded here: https://catalog.ldc.upenn.edu/LDC2019T05
 
@@ -36,4 +36,7 @@ For PDTB 2.0, running the following will save cross-validation folds to `data/pd
 
 We used HuggingFace's pytorch-transformers for our BERT/XLNet baselines reported in the paper. This repository contains the version (plus our own modifications) that we used for the paper, but a newer version of the library is available [here](https://github.com/huggingface/transformers).
 
-
+We ran our experiments under the following environment:
+* Python 3.7.3
+* PyTorch 1.1.0
+* CUDA 9.0.176
