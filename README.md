@@ -22,11 +22,13 @@ Access to both PDTB 2.0 and 3.0 requires an LDC license, so we cannot distribute
 
 ## Preprocessing
 
-Our preprocessing code can generate section-wise cross-validation folds as described in our paper, and also 3 standard splits commonly used in the literature.
+Our preprocessing code can generate section-wise cross-validation folds as described in our paper, and also 3 standard splits commonly used in the literature for PDTB 2.0.
+
+The L3 option in PDTB 3.0 preprocessing code generates the L2+L3 split used in our paper.
 
 For PDTB 3.0, running the following will save cross-validation folds to `data/pdtb3_xval`:
 
-      python preprocess/preprocess_pdtb3.py --data_path path/to/data --output_dir data/pdtb3_xval --split xval
+      python preprocess/preprocess_pdtb3.py --data_path path/to/data --output_dir data/pdtb3_xval --split L2_xval
 
 For PDTB 2.0, running the following will save cross-validation folds to `data/pdtb2_xval`:
 
