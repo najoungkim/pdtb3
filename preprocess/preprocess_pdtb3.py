@@ -1,9 +1,7 @@
 import re
 import os
-import json
 import random
 import argparse
-import numpy as np
 from utils import *
 
 SELECTED_SENSES_PDTB3 = frozenset([
@@ -24,9 +22,9 @@ UNSELECTED_SENSES_PDTB3 = frozenset([
 ])
 
 SELECTED_SENSES_L3_PDTB3 = frozenset([
-    'Temporal.Asynchronous.Precedence', 'Temporal.Asynchronous.Succession', 
+    'Temporal.Asynchronous.Precedence', 'Temporal.Asynchronous.Succession',
     'Temporal.Synchronous', 'Contingency.Cause.Reason',
-    'Contingency.Cause.Result', 'Contingency.Cause+Belief', 'Contingency.Condition', 
+    'Contingency.Cause.Result', 'Contingency.Cause+Belief', 'Contingency.Condition',
     'Contingency.Purpose', 'Comparison.Contrast', 'Comparison.Concession',
     'Expansion.Conjunction', 'Expansion.Instantiation', 'Expansion.Equivalence',
     'Expansion.Level-of-detail.Arg1-as-detail', 'Expansion.Level-of-detail.Arg2-as-detail',
@@ -92,9 +90,7 @@ def process_line(line, text_data):
 
     if relation_type != 'Implicit':
         return None
-    
-    provenance = args[32]
-    
+
     conn1 = args[7]
     conn1_sense1 = args[8]
     conn1_sense2 = args[9]
@@ -112,10 +108,11 @@ def process_line(line, text_data):
         arg1_i, arg1_j = pairs.split('..')
         arg1 = text_data[int(arg1_i):int(arg1_j)+1]
         arg1_str.append(re.sub('\n', ' ', arg1))
-    
+
     arg2_str = []
     for pairs in arg2_idx:
-        if pairs == '': continue
+        if pairs == '':
+            continue
         arg2_i, arg2_j = pairs.split('..')
         arg2 = text_data[int(arg2_i):int(arg2_j)+1]
         arg2_str.append(re.sub('\n', ' ', arg2))
@@ -141,9 +138,6 @@ def pdtb3_make_splits_xval(data_path, write_path, random_sections=False, level='
     sections = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
                 '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21',
                 '22', '23', '24']
-    dev_idx = 0
-    test_idx = 23
-
     dev_sections = []
     test_sections = []
     train_sections = []
@@ -154,7 +148,7 @@ def pdtb3_make_splits_xval(data_path, write_path, random_sections=False, level='
         for i in range(0, 25, 2):
             dev_sections.append([sections[i], sections[(i+1)%25]])
             test_sections.append([sections[(i+23)%25], sections[(i+24)%25]])
-            train_sections.append([sections[(i+j)%25] for j in range(2,23)])
+            train_sections.append([sections[(i+j)%25] for j in range(2, 23)])
     else:
         seed = 111
         random.seed(seed)
@@ -178,7 +172,6 @@ def pdtb3_make_splits_xval(data_path, write_path, random_sections=False, level='
         lines_d = {'train': [], 'dev': [], 'test': []}
 
         for split, sections in split_d.items():
-            lines_to_write = []
             for section in sections:
                 process_section(data_path, section, split, lines_d, label_d, level)
 
@@ -197,14 +190,15 @@ def pdtb3_make_splits_xval(data_path, write_path, random_sections=False, level='
 
 
 def process_section(data_path, section, split, lines_d, label_d, level='L2'):
+    """Processes a single PDTB section."""
     with open(data_path + '/' + section + '.tsv') as f:
         data = f.readlines()
 
-    for i, line in enumerate(data[1:]):
+    for line in data[1:]:
         section, file_no, category, arg1, arg2, \
         conn1, conn1_sense1, conn1_sense2, \
         conn2, conn2_sense1, conn2_sense2 = line.rstrip('\n').split('\t')
-        
+
         sense1 = (conn1_sense1, conn1)
         sense2 = (conn1_sense2, conn1)
         sense3 = (conn2_sense1, conn2)
@@ -220,7 +214,7 @@ def process_section(data_path, section, split, lines_d, label_d, level='L2'):
             raise ValueError('Level must be L2 or L3')
 
         # No useable senses
-        if len(formatted_sense_list) == 0:
+        if not formatted_sense_list:
             continue
 
         if split == 'train':
@@ -251,8 +245,8 @@ def format_sense_l2(sense_list):
         if sense_full is not None:
             sense = '.'.join(sense_full.split('.')[0:2])
             if (sense not in [s for s, c, sf in formatted_sense_list] and
-                sense in SELECTED_SENSES_PDTB3):
-                formatted_sense_list.append((sense,conn,sense_full))
+                    sense in SELECTED_SENSES_PDTB3):
+                formatted_sense_list.append((sense, conn, sense_full))
     return formatted_sense_list
 
 
@@ -261,16 +255,19 @@ def format_sense_l3(sense_list):
     for sense_full, conn in sense_list:
         if sense_full is not None:
             sense_l2 = '.'.join(sense_full.split('.')[0:2])
-            if sense_full not in [s for s, c, sf in formatted_sense_list] and sense_full in SELECTED_SENSES_L3_PDTB3:
-                formatted_sense_list.append((sense_full,conn,sense_full))
-            elif sense_l2 not in [s for s, c, sf in formatted_sense_list] and sense_l2 in SELECTED_SENSES_L3_PDTB3:
-                formatted_sense_list.append((sense_l2,conn,sense_full))
+            if (sense_full not in [s for s, c, sf in formatted_sense_list] and
+                    sense_full in SELECTED_SENSES_L3_PDTB3):
+                formatted_sense_list.append((sense_full, conn, sense_full))
+            elif (sense_l2 not in [s for s, c, sf in formatted_sense_list] and
+                  sense_l2 in SELECTED_SENSES_L3_PDTB3):
+                formatted_sense_list.append((sense_l2, conn, sense_full))
     return formatted_sense_list
 
 
 def pdtb3_make_splits_l1(data_path, write_path):
-
-    TRAIN = ['02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
+    """Creates a split for L1 classification using specifications from Ji & Eistenstein (2015)."""
+    TRAIN = ['02', '03', '04', '05', '06', '07', '08', '09', '10',
+             '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
     DEV = ['00', '01']
     TEST = ['21', '22']
 
@@ -280,11 +277,11 @@ def pdtb3_make_splits_l1(data_path, write_path):
     test_sections = [TEST]
     train_sections = [TRAIN]
 
-    for fold_no, (dev, test, train) in enumerate(zip(dev_sections, test_sections, train_sections)):
+    for (dev, test, train) in zip(dev_sections, test_sections, train_sections):
 
         split_d = {'train': train, 'dev': dev, 'test': test}
         lines_d = {'train': [], 'dev': [], 'test': []}
-        
+
         label_d = {}
         for split, sections in split_d.items():
             for section in sections:
@@ -299,7 +296,7 @@ def process_section_l1(data_path, section, split, lines_d, label_d):
     with open(data_path + '/' + section + '.tsv') as f:
         data = f.readlines()
 
-    for i, line in enumerate(data[1:]):
+    for line in data[1:]:
 
         section, file_no, category, arg1, arg2, \
         conn1, conn1_sense1, conn1_sense2, \
@@ -315,11 +312,11 @@ def process_section_l1(data_path, section, split, lines_d, label_d):
         for sense_full, conn in sense_list:
             if sense_full is not None:
                 sense = sense_full.split('.')[0]
-                if sense not in [s for s, c, sf in formatted_sense_list] and len(sense) > 0: 
-                    formatted_sense_list.append((sense,conn,sense_full))
+                if sense not in [s for s, c, sf in formatted_sense_list] and sense:
+                    formatted_sense_list.append((sense, conn, sense_full))
 
         # Should be at least one sense
-        assert len(formatted_sense_list) > 0
+        assert formatted_sense_list
         assert len(formatted_sense_list) <= 2, formatted_sense_list
         if len(formatted_sense_list) == 2:
             assert formatted_sense_list[0] != formatted_sense_list[1]
@@ -336,7 +333,7 @@ def process_section_l1(data_path, section, split, lines_d, label_d):
                 formatted_sense_list.append((None, None, None))
             sense_paired = zip(formatted_sense_list[0], formatted_sense_list[1])
             senses, conns, senses_full = sense_paired
-            lines_d[split].append(tab_delimited([split, section, file_no, 
+            lines_d[split].append(tab_delimited([split, section, file_no,
                                                  senses[0], senses[1], category,
                                                  arg1, arg2, conns[0], senses_full[0],
                                                  conns[1], senses_full[1]]))
