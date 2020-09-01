@@ -48,18 +48,18 @@ def pdtb2_make_splits_xval(path, write_path):
                     sense3 = (corpus.Conn2SemClass1, corpus.Conn2)
                     sense4 = (corpus.Conn2SemClass2, corpus.Conn2)
 
-                    # use list instead of set to preserve order
+                    # Use list instead of set to preserve order
                     sense_list = [sense1, sense2, sense3, sense4]
                     formatted_sense_list = []
                     for sense_full, conn in sense_list:
                         if sense_full is not None:
                             sense = '.'.join(sense_full.split('.')[0:2])
                             if (sense not in [s for s, c, sf in formatted_sense_list] and
-                                sense in SELECTED_SENSES_PDTB2):
+                                    sense in SELECTED_SENSES_PDTB2):
                                 formatted_sense_list.append((sense, conn, sense_full))
 
                     # No useable senses
-                    if len(formatted_sense_list) == 0:
+                    if not formatted_sense_list:
                         continue
 
                     arg1 = corpus.Arg1_RawText
@@ -165,11 +165,11 @@ def pdtb2_make_splits_single(path, write_path, split_name):
                 if sense_full is not None:
                     sense = '.'.join(sense_full.split('.')[0:2])
                     if (sense not in [s for s, c, sf in formatted_sense_list] and
-                        sense in SELECTED_SENSES_PDTB2):
+                            sense in SELECTED_SENSES_PDTB2):
                         formatted_sense_list.append((sense, conn, sense_full))
 
             # No useable senses
-            if len(formatted_sense_list) == 0:
+            if not formatted_sense_list:
                 continue
 
             arg1 = corpus.Arg1_RawText
@@ -269,7 +269,7 @@ def pdtb2_make_splits_single_l1(path, write_path, split_name):
                         formatted_sense_list.append((sense, conn, sense_full))
 
             # Should be at least one sense
-            assert len(formatted_sense_list) > 0
+            assert formatted_sense_list
 
             arg1 = corpus.Arg1_RawText
             arg2 = corpus.Arg2_RawText
@@ -327,7 +327,7 @@ def main():
                         help='Path to output directory \
                               where the preprocessed dataset will be stored.')
     parser.add_argument('--split', default=None, type=str, required=True,
-                        help='What type of split to create. Should be one of "xval", "single".')
+                        help='Type of split to create. Should be one of "xval", "single".')
 
     # Optional arguments
     parser.add_argument('--split_name', default=None, type=str,
