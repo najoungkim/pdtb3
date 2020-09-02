@@ -2,6 +2,26 @@
 
 This repository contains the preprocessing code and code to replicate the experiments used in the paper [Implicit Discourse Relation Classification: We Need to Talk about Evaluation](https://www.aclweb.org/anthology/2020.acl-main.480/), accepted to ACL 2020.
 
+Please cite our paper using the following BibTeX entry if you use our code:
+```
+@inproceedings{kim-etal-2020-implicit,
+    title = "Implicit Discourse Relation Classification: We Need to Talk about Evaluation",
+    author = "Kim, Najoung  and
+      Feng, Song  and
+      Gunasekara, Chulaka  and
+      Lastras, Luis",
+    booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2020",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/2020.acl-main.480",
+    doi = "10.18653/v1/2020.acl-main.480",
+    pages = "5404--5414",
+    abstract = "Implicit relation classification on Penn Discourse TreeBank (PDTB) 2.0 is a common benchmark task for evaluating the understanding of discourse relations. However, the lack of consistency in preprocessing and evaluation poses challenges to fair comparison of results in the literature. In this work, we highlight these inconsistencies and propose an improved evaluation protocol. Paired with this protocol, we report strong baseline results from pretrained sentence encoders, which set the new state-of-the-art for PDTB 2.0. Furthermore, this work is the first to explore fine-grained relation classification on PDTB 3.0. We expect our work to serve as a point of comparison for future work, and also as an initiative to discuss models of larger context and possible data augmentations for downstream transferability.",
+}
+```
+
 ## Data
 
 Access to both PDTB 2.0 and 3.0 requires an LDC license, so we cannot distribute this data. 
